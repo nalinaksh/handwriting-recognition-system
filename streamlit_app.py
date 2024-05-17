@@ -59,12 +59,13 @@ def image_to_text(image_path):
 
 #upload image 
 uploaded_file = st.sidebar.file_uploader("Upload an image", type=['png', 'jpg'])
+file_path = os.path.join(os.getcwd(), uploaded_file.name)
+st.write(file_path)
 
 # If user attempts to upload a file.
 if uploaded_file is not None:
   image = Image.open(uploaded_file)
   st.image(image, caption="Uploaded Image")
   with st.spinner('Recognizing text ...'):
-    file_path = os.path.join(os.getcwd(), uploaded_file.name)
-    story = image_to_text(file_path)
-    st.write(story)
+    text = image_to_text(file_path)
+    st.write(text)
