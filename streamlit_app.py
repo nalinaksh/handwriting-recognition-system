@@ -1,7 +1,7 @@
 import base64
 import requests
 import os
-# from PIL import Image
+import streamlit as st
 
 def encode_image(image_path):
     with open(image_path, "rb") as image_file:
