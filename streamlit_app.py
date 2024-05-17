@@ -65,5 +65,6 @@ if uploaded_file is not None:
   image = Image.open(uploaded_file)
   st.image(image, caption="Uploaded Image")
   with st.spinner('Recognizing text ...'):
-    story = image_to_text(uploaded_file.name)
+    file_path = os.path.join("temp_dir", uploaded_file.name)
+    story = image_to_text(file_path)
     st.write(story)
