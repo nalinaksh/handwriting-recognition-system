@@ -1,3 +1,2 @@
-openai
-base64
+
 requests
