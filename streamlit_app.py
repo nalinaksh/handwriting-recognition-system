@@ -83,7 +83,7 @@ def extract_spelling_errors(text):
 # Function to highlight specific words in a paragraph
 def highlight_text(text, words_to_highlight):
     for word in words_to_highlight:
-        text = text.replace(word, f"<span style='background-color: yellow'>{word}</span>")
+        text = text.replace(word, f"<span style='background-color: #FFFF99'>{word}</span>")
     return text
 
 #upload image 
