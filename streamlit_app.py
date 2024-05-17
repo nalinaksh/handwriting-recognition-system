@@ -64,7 +64,7 @@ def extract_spelling_errors(text):
     
     # Find the list of words inside square brackets
     matches = re.findall(pattern, text)
-    
+    spelling_errors = []
     # Check if there are matches
     if matches:
         # Get the first match (assuming there's only one)
@@ -79,8 +79,6 @@ def extract_spelling_errors(text):
     # else:
     #     print("No spelling errors found.")
     return spelling_errors
-
-import streamlit as st
 
 # Function to highlight specific words in a paragraph
 def highlight_text(text, words_to_highlight):
@@ -102,7 +100,7 @@ if uploaded_file is not None:
   st.image(image, caption="Uploaded Image")
   with st.spinner('Recognizing text ...'):
     text = image_to_text(file_path)
-      spelling_errors = extract_spelling_errors(text)
+    spelling_errors = extract_spelling_errors(text)
     # st.write(text)
     # Highlighting the words in the paragraph
     highlighted_paragraph = highlight_text(text, spelling_errors)
