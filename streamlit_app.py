@@ -60,7 +60,10 @@ def image_to_text(image_path):
 #upload image 
 uploaded_file = st.sidebar.file_uploader("Upload an image", type=['png', 'jpg'])
 file_path = os.path.join(os.getcwd(), uploaded_file.name)
-st.write(file_path)
+with open(file_path, "wb") as f:
+    f.write(uploaded_file.getbuffer())
+
+# st.write(file_path)
 
 # If user attempts to upload a file.
 if uploaded_file is not None:
