@@ -1,6 +1,7 @@
 import base64
 import requests
 import os
+import re
 import streamlit as st
 from PIL import Image
 
@@ -57,6 +58,36 @@ def image_to_text(image_path):
 
   return text
 
+def extract_spelling_errors(text):
+    # Regular expression pattern to match the list of words inside square brackets
+    pattern = r'\[([^\[\]]*)\]'
+    
+    # Find the list of words inside square brackets
+    matches = re.findall(pattern, text)
+    
+    # Check if there are matches
+    if matches:
+        # Get the first match (assuming there's only one)
+        words_list = matches[0]
+        # Check if the list is not empty
+        if words_list:
+            # Split the list of words by comma and strip whitespace
+            spelling_errors = [word.strip() for word in words_list.split(',')]
+            # print("Spelling Errors:", spelling_errors)
+    #     else:
+    #         print("No spelling errors found.")
+    # else:
+    #     print("No spelling errors found.")
+    return spelling_errors
+
+import streamlit as st
+
+# Function to highlight specific words in a paragraph
+def highlight_text(text, words_to_highlight):
+    for word in words_to_highlight:
+        text = text.replace(word, f"<span style='background-color: yellow'>{word}</span>")
+    return text
+
 #upload image 
 uploaded_file = st.sidebar.file_uploader("Upload an image", type=['png', 'jpg'])
 file_path = os.path.join(os.getcwd(), uploaded_file.name)
@@ -71,4 +102,12 @@ if uploaded_file is not None:
   st.image(image, caption="Uploaded Image")
   with st.spinner('Recognizing text ...'):
     text = image_to_text(file_path)
-    st.write(text)
+      spelling_errors = extract_spelling_errors(text)
+    # st.write(text)
+    # Highlighting the words in the paragraph
+    highlighted_paragraph = highlight_text(text, spelling_errors)
+    
+    # Render the highlighted paragraph as HTML
+    st.markdown(highlighted_paragraph, unsafe_allow_html=True)
+
+    
