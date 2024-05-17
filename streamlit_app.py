@@ -2,6 +2,7 @@ import base64
 import requests
 import os
 import streamlit as st
+from PIL import image
 
 def encode_image(image_path):
     with open(image_path, "rb") as image_file:
@@ -61,7 +62,7 @@ uploaded_file = st.sidebar.file_uploader("Upload an image", type=['png', 'jpg'])
 
 # If user attempts to upload a file.
 if uploaded_file is not None:
-  # image = Image.open(uploaded_file)
+  image = Image.open(uploaded_file)
   st.image(image, caption="Uploaded Image")
   with st.spinner('Recognizing text ...'):
     story = image_to_text(uploaded_file)
