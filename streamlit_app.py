@@ -103,9 +103,10 @@ if uploaded_file is not None:
     spelling_errors = extract_spelling_errors(text)
     # st.write(text)
     # Highlighting the words in the paragraph
-    highlighted_paragraph = highlight_text(text, spelling_errors)
+    # highlighted_paragraph = highlight_text(text, spelling_errors)
+    highlighted_text = text.replace(words_list, ", ".join([f"**{word}**" for word in spelling_errors]))
     
     # Render the highlighted paragraph as HTML
-    st.markdown(highlighted_paragraph, unsafe_allow_html=True)
+    st.markdown(highlighted_text)
 
     
