@@ -78,7 +78,9 @@ def extract_spelling_errors(text):
     #         print("No spelling errors found.")
     # else:
     #     print("No spelling errors found.")
-    return spelling_errors
+            return words_list, spelling_errors
+        else:
+            return None,None
 
 # Function to highlight specific words in a paragraph
 def highlight_text(text, words_to_highlight):
@@ -100,12 +102,12 @@ if uploaded_file is not None:
   st.image(image, caption="Uploaded Image")
   with st.spinner('Recognizing text ...'):
     text = image_to_text(file_path)
-    spelling_errors = extract_spelling_errors(text)
+    word_list, spelling_errors = extract_spelling_errors(text)
     # st.write(text)
     # Highlighting the words in the paragraph
     # highlighted_paragraph = highlight_text(text, spelling_errors)
     highlighted_text = text.replace(words_list, ", ".join([f"**{word}**" for word in spelling_errors]))
-    
+
     # Render the highlighted paragraph as HTML
     st.markdown(highlighted_text)
 
