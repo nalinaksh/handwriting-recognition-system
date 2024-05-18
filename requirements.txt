@@ -1,4 +1,3 @@
 transformers
 requests
 streamlit
-pyspellchecker
