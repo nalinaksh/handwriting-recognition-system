@@ -4,7 +4,7 @@ from nltk.corpus import words
 import os
 
 # Use a pipeline as a high-level helper
-pipe = pipeline("token-classification", model="nalinaksh/bert-finetuned-ner", token = os.environ['HF_ACCESS_KEY'])
+pipe = pipeline("token-classification", model="nalinaksh/bert-finetuned-ner")
 
 # Download NLTK data if not already downloaded
 nltk.download('words')
