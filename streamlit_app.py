@@ -34,11 +34,8 @@ def image_to_text(image_path):
             out what is written in the images to help with grading the assignments. \
             If the image appears to be rotated, deal with appropriately. \
             Handle newlines in recongnized text as and when they appear in images. \
-            Do not auto corect the spelling mistakes. \
-            Also specify all the words that have spelling mistakes. \
-            Answer should be in this format: \
-            Handwritten text: \
-            Spelling Errors: [list of words with spelling mistakes]"
+            Recognize the text verbatim, do not auto corect the spelling mistakes. \
+            Do not add anything extra text of your own in the output, just the recognized text.
           },
           {
             "type": "image_url",
@@ -49,7 +46,7 @@ def image_to_text(image_path):
         ]
       }
     ],
-    "max_tokens": 300
+    "max_tokens": 512
   }
 
   response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
@@ -58,43 +55,11 @@ def image_to_text(image_path):
 
   return text
 
-def extract_spelling_errors(text):
-    # Regular expression pattern to match the list of words inside square brackets
-    pattern = r'\[([^\[\]]*)\]'
-    
-    # Find the list of words inside square brackets
-    matches = re.findall(pattern, text)
-    spelling_errors = []
-    # Check if there are matches
-    if matches:
-        # Get the first match (assuming there's only one)
-        words_list = matches[0]
-        # Check if the list is not empty
-        if words_list:
-            # Split the list of words by comma and strip whitespace
-            spelling_errors = [word.strip() for word in words_list.split(',')]
-            # print("Spelling Errors:", spelling_errors)
-    #     else:
-    #         print("No spelling errors found.")
-    # else:
-    #     print("No spelling errors found.")
-            return words_list, spelling_errors
-        else:
-            return None,None
-
-# Function to highlight specific words in a paragraph
-def highlight_text(text, words_to_highlight):
-    for word in words_to_highlight:
-        text = text.replace(word, f"<span style='background-color: #FFFF99'>{word}</span>")
-    return text
-
 #upload image 
 uploaded_file = st.sidebar.file_uploader("Upload an image", type=['png', 'jpg'])
 file_path = os.path.join(os.getcwd(), uploaded_file.name)
 with open(file_path, "wb") as f:
     f.write(uploaded_file.getbuffer())
-
-# st.write(file_path)
 
 # If user attempts to upload a file.
 if uploaded_file is not None:
@@ -102,13 +67,5 @@ if uploaded_file is not None:
   st.image(image, caption="Uploaded Image")
   with st.spinner('Recognizing text ...'):
     text = image_to_text(file_path)
-    word_list, spelling_errors = extract_spelling_errors(text)
-    # st.write(text)
-    # Highlighting the words in the paragraph
-    # highlighted_paragraph = highlight_text(text, spelling_errors)
-    highlighted_text = text.replace(words_list, ", ".join([f"**{word}**" for word in spelling_errors]))
-
-    # Render the highlighted paragraph as HTML
-    st.markdown(highlighted_text)
-
+    st.markdown(text)
     
