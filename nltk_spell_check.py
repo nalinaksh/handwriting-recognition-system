@@ -1,24 +1,25 @@
-from transformers import pipeline
-import nltk
-import os
 from textblob import TextBlob
+import spacy
+import os
 
-# Use a pipeline as a high-level helper
-pipe = pipeline("token-classification", model="nalinaksh/bert-finetuned-ner")
+# Load the English NER model
+nlp = spacy.load("en_core_web_sm")
 
 #function to identify words that are in ner category, so these should not be checked for spelling mistakes
 def find_ners(text):
   ners = []
-  entities = pipe(text)
-  for entity in entities:
-    ners.append(entity['word'])
+  doc = nlp(text)
+  # Extract named entities
+  for ent in doc.ents:
+    ners.append(ent.text)
   return ners
 
 def spell_check(text):
     # Create a TextBlob object
     blob = TextBlob(text)
-    
+    ignore_words = find_ners(text)
     # Get a list of misspelled words
-    misspelled_words = [word for word in blob.words if word.lower() not in blob.correct()]
+    candidate_words = [word for word in blob.words if word not in ignore_words]
+    misspelled_words = [word for word in candidate_words if word.lower() not in blob.correct()]
     
     return misspelled_words
