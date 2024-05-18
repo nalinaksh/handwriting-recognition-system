@@ -1,4 +1,5 @@
 transformers
+torch==1.13.1
 requests
 streamlit
 nltk
