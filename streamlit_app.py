@@ -4,7 +4,7 @@ import os
 import re
 import streamlit as st
 from PIL import Image
-from detect_spelling_mistakes import find_spelling_errors
+from nltk_spell_check import spell_check
 
 def encode_image(image_path):
     with open(image_path, "rb") as image_file:
@@ -72,5 +72,5 @@ if uploaded_file is not None:
     with st.spinner('Recognizing text ...'):
         text = image_to_text(file_path)
         st.markdown(text)
-        spelling_mistakes = find_spelling_errors(text)
+        spelling_mistakes = spell_check(text)
         st.write(spelling_mistakes)
