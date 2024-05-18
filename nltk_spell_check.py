@@ -1,8 +1,18 @@
 from textblob import TextBlob
 import spacy
 import os
+import subprocess
 
-# Load the English NER model
+# Define a function to download the English model
+def download_model():
+    subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"])
+
+# Check if the model is already installed
+if "en_core_web_sm" not in spacy.util.get_installed_models():
+    # If not installed, download the model
+    download_model()
+
+# Load the English model
 nlp = spacy.load("en_core_web_sm")
 
 #function to identify words that are in ner category, so these should not be checked for spelling mistakes
