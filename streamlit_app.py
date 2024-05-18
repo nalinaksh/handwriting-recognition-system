@@ -35,7 +35,7 @@ def image_to_text(image_path):
             If the image appears to be rotated, deal with appropriately. \
             Handle newlines in recongnized text as and when they appear in images. \
             Recognize the text verbatim, do not auto corect the spelling mistakes. \
-            Do not add anything extra text of your own in the output, just the recognized text.
+            Do not add anything extra text of your own in the output, just the recognized text."
           },
           {
             "type": "image_url",
