@@ -75,5 +75,5 @@ if uploaded_file is not None:
     with st.spinner('Recognizing text ...'):
         text = image_to_text(file_path, prompt)
         st.markdown(text)
-        spelling_mistakes = spell_check(text)
+        spelling_mistakes = spell_check(text,50,4)
         st.write(spelling_mistakes)
