@@ -5,6 +5,14 @@ import re
 import streamlit as st
 from PIL import Image
 from spell_checker import spell_check
+from authenticate import *
+
+#Authenticate user
+if not check_password():
+    st.stop()
+
+st.title("Handwriting Recognition System with Spelling Mistakes Detection")
+st.write("Upload an image of hand-written text")
 
 def encode_image(image_path):
     with open(image_path, "rb") as image_file:
