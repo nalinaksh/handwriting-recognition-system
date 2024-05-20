@@ -4,13 +4,13 @@ import os
 import re
 import streamlit as st
 from PIL import Image
-from nltk_spell_check import spell_check
+from spell_checker import spell_check
 
 def encode_image(image_path):
     with open(image_path, "rb") as image_file:
       return base64.b64encode(image_file.read()).decode('utf-8')
 
-def image_to_text(image_path):  
+def image_to_text(image_path, prompt):  
   # Getting the base64 string
   base64_image = encode_image(image_path)
 
@@ -30,13 +30,7 @@ def image_to_text(image_path):
         "content": [
           {
             "type": "text",
-            "text": "The images are of children's hand written assignments. \
-            You are a hand writting recognition (HWR) expert and your job is to find \
-            out what is written in the images to help with grading the assignments. \
-            If the image appears to be rotated, deal with appropriately. \
-            Handle newlines in recongnized text as and when they appear in images. \
-            Recognize the text verbatim, do not auto corect the spelling mistakes. \
-            Do not add anything extra text of your own in the output, just the recognized text."
+            "text": prompt
           },
           {
             "type": "image_url",
@@ -53,8 +47,17 @@ def image_to_text(image_path):
   response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
   json_resp = response.json()
   text = json_resp['choices'][0]['message']['content']
-
   return text
+
+prompt=f"""
+  The images are of children's hand written assignments. \
+  You are a hand writting recognition (HWR) expert and your job is to find \
+  out what is written in the images to help with grading the assignments. \
+  If the image appears to be rotated, deal with appropriately. \
+  Handle newlines in recongnized text as and when they appear in images. \
+  Recognize the text verbatim, do not auto corect the spelling mistakes. \
+  Do not add anything extra text of your own in the output, just the recognized text.
+  """
 
 #upload image 
 uploaded_file = st.sidebar.file_uploader("Upload an image", type=['png', 'jpg'])
@@ -70,7 +73,7 @@ if uploaded_file is not None:
         f.write(uploaded_file.getbuffer())
     #get text
     with st.spinner('Recognizing text ...'):
-        text = image_to_text(file_path)
+        text = image_to_text(file_path, prompt)
         st.markdown(text)
         spelling_mistakes = spell_check(text)
         st.write(spelling_mistakes)
